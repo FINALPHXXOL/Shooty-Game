@@ -7,6 +7,7 @@ public abstract class Controller : MonoBehaviour
     public Pawn pawn;
     public float lives;
     public float score;
+    public float accuracy;
 
     // Start is called before the first frame update
     public virtual void Start()
@@ -21,6 +22,9 @@ public abstract class Controller : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
         // Make decisions
         MakeDecisions();
     }

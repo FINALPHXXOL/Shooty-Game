@@ -29,7 +29,9 @@ public class Pickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
     }
 
     public virtual void OnTriggerEnter(Collider other)

@@ -1428,6 +1428,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9157333543078762785, guid: 1ce82662f3868bc4193f3732232df0a1, type: 3}
   m_PrefabInstance: {fileID: 5133566313232128223}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1478126549
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1478126551}
+  - component: {fileID: 1478126550}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1478126550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478126549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 555f35cc9d6b69845b91ff69dcb0494b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  player: {fileID: 0}
+  isPaused: 0
+  lives: 3
+  enemiesRemaining: 0
+  currentWave: 0
+  prefabPlayerController: {fileID: 0}
+  prefabPlayerPawn: {fileID: 0}
+  prefabAIController: {fileID: 0}
+  prefabAIPawn: {fileID: 0}
+  playerSpawnTransform: {fileID: 0}
+  enemyAISpawnTransform: {fileID: 0}
+  players: []
+  enemies: []
+  playerSpawns: []
+  AISpawns: []
+  waves: []
+  spawnPoints: []
+--- !u!4 &1478126551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478126549}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.7527633, y: 0.6325125, z: 17.961119}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1688918014
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,13 +8,14 @@ public class Death_Destroy : GameAction
 {
     [SerializeField] private float delayBeforeDestruction;
 
-    private void Start()
+    public override void Start()
     {
         // Get the health component
         Health health = GetComponent<Health>();
 
         // Register with the OnDie event
         health.OnDeath.AddListener(DestroyOnDeath);
+        base.Start();
     }
 
     public void DestroyOnDeath()

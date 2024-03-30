@@ -12,5 +12,8 @@ public class GameAction : MonoBehaviour
     }
     public virtual void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
     }
 }

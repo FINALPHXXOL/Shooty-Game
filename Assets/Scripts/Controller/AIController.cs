@@ -9,11 +9,26 @@ public class AIController : Controller
     public float stoppingDistance;
     public Transform targetTransform;
     private Vector3 desiredVelocity = Vector3.zero;
+    public float shootingDistance;
+    public float shootingAngle;
 
     // Start is called before the first frame update
     public override void Start()
     {
-        base.Start();
+        
+    }
+
+    // Update is called once per frame
+    public override void Update()
+    {
+        // If we don't have a target, target the player (if we can)
+        if (!HasTarget())
+        {
+            TargetPlayer();
+        }
+
+        // Do what all controllers do each frame (Make Decisions)
+        base.Update();
     }
     /// <summary>
     /// Links with pawn's NavMesh component and adds controller to pawn while adding pawn to controller.
@@ -47,6 +62,49 @@ public class AIController : Controller
         agent.updatePosition = false;
         agent.updateRotation = false;
     }
+
+    private void ShootTarget()
+    {
+        // If we are within distance
+        if (Vector3.Distance(targetTransform.position, pawn.transform.position) <= shootingDistance)
+        {
+            // And we are within the angle
+            Vector3 vectorToTarget = targetTransform.position - pawn.transform.position;
+            if (Vector3.Angle(pawn.transform.forward, vectorToTarget) <= shootingAngle)
+            {
+                // They should pull the trigger
+                pawn.weapon.OnPrimaryAttackBegin.Invoke();
+            }
+        }
+        else
+        {
+            // They can release the trigger
+            pawn.weapon.OnPrimaryAttackEnd.Invoke();
+        }
+    }
+
+    private bool HasTarget()
+    {
+        if (targetTransform != null)
+        {
+            ShootTarget();
+            return true;
+        }
+        return false;
+    }
+
+    private void TargetPlayer()
+    {
+        Controller playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+            if (playerController.pawn != null)
+            {
+                targetTransform = playerController.pawn.transform;
+            }
+        }
+    }
+
     /// <summary>
     /// Destroys ties with AI NavMesh and unlinks pawn's controller and this pawn.
     /// </summary>
@@ -59,12 +117,6 @@ public class AIController : Controller
         base.UnpossessPawn();
     }
 
-    // Update is called once per frame
-    public override void Update()
-    {
-        // Do what all controllers do each frame (Make Decisions)
-        base.Update();
-    }
     /// <summary>
     /// Performs all functions that AIController makes on Update()
     /// </summary>

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AISpawnPoint : MonoBehaviour
+public class AISpawnPoint : SpawnPoint
 {
     public void Start()
     {

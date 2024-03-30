@@ -20,6 +20,9 @@ public class WeaponAction : GameAction
 
     public override void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
         base.Update();
     }
 }

@@ -44,6 +44,9 @@ public class PlayerController : Controller
         base.Update();
         if (pawn != null)
         {
+            if (GameManager.instance.isPaused) return;
+
+            //... the rest of the function goes here.
             ProcessInputs();
         }
     }

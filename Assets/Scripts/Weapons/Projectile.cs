@@ -19,6 +19,10 @@ public class Projectile : MonoBehaviour
 
     public void Update()
     {
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
+
         // Move forward at our movespeed (per second, not per framedraw)
         rb.velocity = transform.forward * moveSpeed;
     }

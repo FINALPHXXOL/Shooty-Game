@@ -30,12 +30,25 @@ public class WeaponAction_Raygun : WeaponAction
         base.Update();
         if (isAutofireActive)
         {
+            if (GameManager.instance.isPaused) return;
+
+            //... the rest of the function goes here.
             Shoot();
         }
     }
 
     public void Shoot()
     {
+        // Store the direction we shoot without the accuracy system
+        Vector3 newFireDirection = firePoint.forward;
+
+        // Get the roation change based on our accuracy
+        Quaternion accuracyFireDelta = Quaternion.Euler(0, weapon.GetAccuracyRotationDegrees(weapon.owner.controller.accuracy), 0);
+
+        // Multiply by the rotation from inaccuacy to set new rotation value
+        // (Note that multiplication between a Quaternion and Vector is not commutative. The order matters!)
+        newFireDirection = accuracyFireDelta * newFireDirection;
+
         // Create a variable to hold our raycast hit data
         RaycastHit hit;
 
@@ -45,38 +58,48 @@ public class WeaponAction_Raygun : WeaponAction
         {
             // if so...
             // if so, do the Raycast
-            if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, fireDistance))
+            if (Physics.Raycast(firePoint.position, newFireDirection, out hit, fireDistance))
             {
-                // If we hit, and the other object has a Health component
-                Health otherHealth = hit.collider.gameObject.GetComponent<Health>();
-                if (otherHealth != null)
                 {
-                    // Tell it to take damage!
-                    otherHealth.TakeDamage(damageDone);
+                    // Instantiate the projectile
+                    GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as GameObject;
+                    LaserBeam newProjectile = projectile.GetComponent<LaserBeam>();
+                    // If we hit, and the other object has a Health component
+                    Health otherHealth = hit.collider.gameObject.GetComponent<Health>();
+                    if (otherHealth != null)
+                    {
+                        // Tell it to take damage!
+                        otherHealth.TakeDamage(damageDone);
+                    }
+                    else
+                    {
+                        // If we didn't hit, draw the visuals the full distance of the raycast
+                        LaserBeam visuals = projectile.GetComponent<LaserBeam>();
+                        visuals.startPoint = firePoint.position;
+                        visuals.endPoint = firePoint.position + (newFireDirection * fireDistance);
+                    }
+
+                    
+
+                    newProjectile.startPoint = firePoint.position;
+                    newProjectile.endPoint = hit.collider.transform.position;
+
+                    // Set the layer for the projectile
+                    projectile.gameObject.layer = this.gameObject.layer;
+
+                    /* Set the data for the projectile
+                    Projectile projectileData = projectile.GetComponent<Projectile>();
+                    if (projectileData != null)
+                    {
+                        projectileData.damage = damageDone;
+                    }
+                    */
+                    // Save the time we shot
+                    lastShotTime = Time.time;
                 }
-
-                // Instantiate the projectile
-                GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as GameObject;
-                LaserBeam newProjectile = projectile.GetComponent<LaserBeam>();
-
-                newProjectile.startPoint = firePoint.position;
-                newProjectile.endPoint = hit.collider.transform.position;
-
-                // Set the layer for the projectile
-                projectile.gameObject.layer = this.gameObject.layer;
-
-                /* Set the data for the projectile
-                Projectile projectileData = projectile.GetComponent<Projectile>();
-                if (projectileData != null)
-                {
-                    projectileData.damage = damageDone;
-                }
-                */
-                // Save the time we shot
-                lastShotTime = Time.time;
             }
-        }
 
+        }
     }
 
     public void AutofireBegin()

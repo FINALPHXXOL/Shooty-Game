@@ -21,5 +21,9 @@ public class CameraController : MonoBehaviour
 
         // Look at the target
         transform.LookAt(target.position, target.forward);
+
+        if (GameManager.instance.isPaused) return;
+
+        //... the rest of the function goes here.
     }
 }
