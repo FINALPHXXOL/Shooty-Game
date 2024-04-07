@@ -44,6 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3b0ceea00dedc40afa7b6e6c639b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pawn: {fileID: 6463331984790480107, guid: 1ce82662f3868bc4193f3732232df0a1, type: 3}
-  lives: 0
+  pawn: {fileID: 0}
+  lives: 3
   score: 0
+  accuracy: 1
+  sprintKey: 304
+  damageKey: 114
+  isMouseRotation: 0

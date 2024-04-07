@@ -5,7 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Weapon))]
 public class WeaponAction : GameAction
 {
-    protected Weapon weapon;
+    public Weapon weapon;
+    public GameActionPlaySound shotFiredSound;
+    public GameActionSpawnParticles muzzleParticle;
 
     public override void Awake()
     {

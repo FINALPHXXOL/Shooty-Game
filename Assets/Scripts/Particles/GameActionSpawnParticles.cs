@@ -10,7 +10,6 @@ public class GameActionSpawnParticles : GameAction
 
     public void SpawnParticles()
     {
-        print("Particle Spawn");
         // Instantiate the particles at the target node
         GameObject particles = Instantiate<GameObject>(particlePrefab, targetNode.position, targetNode.rotation);
 

@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        StartGame();
     }
     public void TogglePause()
     {
@@ -86,16 +86,13 @@ public class GameManager : MonoBehaviour
 
     public void DoGameOver()
     {
-
+        print("You lost!");
     }
 
     public void StartGame()
     {
         // Set our current wave to 0
         currentWave = 0;
-
-        // Spawn our current wave
-        SpawnWave(waves[currentWave]);
 
         // Connect to our camera
         FindCamera();
@@ -105,6 +102,10 @@ public class GameManager : MonoBehaviour
 
         // Spawn player
         SpawnPlayer();
+
+        // Spawn our current wave
+        SpawnWave(waves[currentWave]);
+
     }
 
     private void LoadSpawnPoints()
@@ -180,7 +181,6 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayer()
     {
-
         // If we have enough lives
         if (player.lives > 0)
         {
@@ -199,10 +199,23 @@ public class GameManager : MonoBehaviour
             // Subtract one from lives
             player.lives--;
 
+            // Subscribe to the player death event
+            Health playerHealth = player.pawn.GetComponent<Health>();
+            if (playerHealth != null)
+            {
+                playerHealth.OnDeath.AddListener(OnPlayerDeath);
+            }
+
         }
         // Otherwise, call the game over function
         else
         {
+            // Destroy their current pawn
+            Destroy(player.pawn.gameObject);
+
+            // Unpossess the current pawn
+            player.UnpossessPawn();
+
             DoGameOver();
         }
     }
@@ -238,6 +251,7 @@ public class GameManager : MonoBehaviour
         // Connect the controller and pawn!
         player.PossessPawn(SpawnPawn());
 
+
         // Connect the camera controller to the pawn
         mainCamera.target = player.pawn.transform;
 
@@ -256,9 +270,10 @@ public class GameManager : MonoBehaviour
 
     public Pawn SpawnPawn(GameObject pawnToSpawn)
     {
+        print("bruh7");
         // Spawn the Player at a random spawn point
         Transform randomSpawnPoint = GetRandomSpawnPoint();
-        GameObject newPawnObj = Instantiate(pawnToSpawn, playerSpawnTransform.position, playerSpawnTransform.rotation);
+        GameObject newPawnObj = Instantiate(pawnToSpawn, randomSpawnPoint.position, randomSpawnPoint.rotation);
 
         Pawn newPawn = newPawnObj.GetComponent<Pawn>();
         return newPawn;
@@ -278,8 +293,6 @@ public class GameManager : MonoBehaviour
     public void SpawnEnemy()
     {
         SpawnEnemy(prefabAIPawn);
-
-
     }
 
     public void SpawnEnemy(GameObject pawnToSpawn)

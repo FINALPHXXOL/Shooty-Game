@@ -34,25 +34,30 @@ public abstract class Controller : MonoBehaviour
     /// <param name="pawnToPossess"></param>
     public virtual void PossessPawn(Pawn pawnToPossess)
     {
-        // Set our pawn variable to the pawn we want to possess
-        pawn = pawnToPossess;
+         // Set our pawn variable to the pawn we want to possess
+         pawn = pawnToPossess;
 
-        // Set the pawn's controller to this controller
-        pawn.controller = this;
+         // Set the pawn's controller to this controller
+         pawn.controller = this;
+        print("bruh9");
     }
     /// <summary>
     /// Unlinks both the connected pawn's controller and sets our pawn variable to null.
     /// </summary>
     public virtual void UnpossessPawn()
     {
+        // Set the pawn's layer to this controller's layer
+        pawn.gameObject.layer = this.gameObject.layer;
+
         // Set the pawn's controller to this null
         pawn.controller = null;
 
         // Set our pawn variable to null
         pawn = null;
 
-        // Set the pawn's layer to this controller's layer
-        pawn.gameObject.layer = this.gameObject.layer;
+         
+        print("bruh8");
+
     }
     protected abstract void MakeDecisions();
     public abstract void Respawn();

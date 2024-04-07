@@ -6,8 +6,11 @@ public class PickupWeapon : Pickup
 {
     public Weapon weaponToEquip;
 
+    private bool isTriggered = false;
     public override void OnTriggerEnter(Collider other)
     {
+        if (isTriggered) return; // Exit if already triggered
+        isTriggered = true; // Set flag to true
         // Equip the weapon
         if (weaponToEquip != null)
         {

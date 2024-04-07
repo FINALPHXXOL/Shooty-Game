@@ -36,10 +36,12 @@ public class Pickup : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other)
     {
+        
         // Destroy this gameObject
         Destroy(gameObject);
-
+        print("It shoudl be destroyed.");
         // Invoke the event so designers can add GameActions
         OnPickup.Invoke();
+        
     }
 }

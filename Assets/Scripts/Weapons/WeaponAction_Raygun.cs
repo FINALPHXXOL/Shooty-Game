@@ -36,7 +36,7 @@ public class WeaponAction_Raygun : WeaponAction
             Shoot();
         }
     }
-
+    
     public void Shoot()
     {
         // Store the direction we shoot without the accuracy system
@@ -64,6 +64,9 @@ public class WeaponAction_Raygun : WeaponAction
                     // Instantiate the projectile
                     GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as GameObject;
                     LaserBeam newProjectile = projectile.GetComponent<LaserBeam>();
+
+                    shotFiredSound.Play();
+                    muzzleParticle.SpawnParticles();
                     // If we hit, and the other object has a Health component
                     Health otherHealth = hit.collider.gameObject.GetComponent<Health>();
                     if (otherHealth != null)
@@ -78,8 +81,6 @@ public class WeaponAction_Raygun : WeaponAction
                         visuals.startPoint = firePoint.position;
                         visuals.endPoint = firePoint.position + (newFireDirection * fireDistance);
                     }
-
-                    
 
                     newProjectile.startPoint = firePoint.position;
                     newProjectile.endPoint = hit.collider.transform.position;

@@ -55,46 +55,49 @@ public class PlayerController : Controller
     /// </summary>
     protected override void MakeDecisions()
     {
-        // Get the Input axes
-        Vector3 moveVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
-        // Limit the vector to a max magnitude of 1
-        moveVector = Vector3.ClampMagnitude(moveVector, 1);
-        // Convert our direction from world space (as passed in) to local space (that we need for the Animator)
-        moveVector = transform.InverseTransformDirection(moveVector);
-        // Tell the pawn to move
-        pawn.Move(moveVector);
-
-        // if we are mouse rotating
-        if (isMouseRotation)
+        if (pawn != null)
         {
-            // Create the Ray from the mouse position in the direciton the camera is facing.
-            Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Get the Input axes
+            Vector3 moveVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-            // Create a plane at our feet, and a normal (perpendicular direction) of world up.
-            Plane footPlane = new Plane(Vector3.up, pawn.transform.position);
+            // Limit the vector to a max magnitude of 1
+            moveVector = Vector3.ClampMagnitude(moveVector, 1);
+            // Convert our direction from world space (as passed in) to local space (that we need for the Animator)
+            moveVector = transform.InverseTransformDirection(moveVector);
+            // Tell the pawn to move
+            pawn.Move(moveVector);
 
-            // Find the distance down that ray that the plane and ray intersect
-            float distanceToIntersect;
-            // Out arguments don't have to be initialized before being passed in a method call.
-            // However, the called method is required to assign a value before the method returns.            
-            if (footPlane.Raycast(mouseRay, out distanceToIntersect))
+            // if we are mouse rotating
+            if (isMouseRotation)
             {
-                // Find the intersection point
-                Vector3 intersectionPoint = mouseRay.GetPoint(distanceToIntersect);
+                // Create the Ray from the mouse position in the direciton the camera is facing.
+                Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                // Look at the intersection point
-                pawn.RotateToLookAt(intersectionPoint);
+                // Create a plane at our feet, and a normal (perpendicular direction) of world up.
+                Plane footPlane = new Plane(Vector3.up, pawn.transform.position);
+
+                // Find the distance down that ray that the plane and ray intersect
+                float distanceToIntersect;
+                // Out arguments don't have to be initialized before being passed in a method call.
+                // However, the called method is required to assign a value before the method returns.            
+                if (footPlane.Raycast(mouseRay, out distanceToIntersect))
+                {
+                    // Find the intersection point
+                    Vector3 intersectionPoint = mouseRay.GetPoint(distanceToIntersect);
+
+                    // Look at the intersection point
+                    pawn.RotateToLookAt(intersectionPoint);
+                }
+                else
+                {
+                    Debug.Log("Camera is not looking at the ground - no intersection between plane and ray");
+                }
             }
             else
             {
-                Debug.Log("Camera is not looking at the ground - no intersection between plane and ray");
+                // Tell the pawn to rotate based on the CameraRotation axis
+                pawn.Rotate(Input.GetAxis("CameraRotation"));
             }
-        }
-        else
-        {
-            // Tell the pawn to rotate based on the CameraRotation axis
-            pawn.Rotate(Input.GetAxis("CameraRotation"));
         }
     }
     /// <summary>

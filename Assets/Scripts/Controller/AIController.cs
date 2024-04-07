@@ -5,7 +5,8 @@ using UnityEngine.AI;
 
 public class AIController : Controller
 {
-    [HideInInspector] public NavMeshAgent agent;
+    //[HideInInspector] 
+    public NavMeshAgent agent;
     public float stoppingDistance;
     public Transform targetTransform;
     private Vector3 desiredVelocity = Vector3.zero;
@@ -15,7 +16,26 @@ public class AIController : Controller
     // Start is called before the first frame update
     public override void Start()
     {
-        
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.enemyAISpawnTransform != null)
+            {
+                GameManager.instance.enemies.Add(this);
+            }
+        }
+        base.Start();
+    }
+
+    // OnDestroy is called before object is destroyed.
+    public void OnDestroy()
+    {
+        if (GameManager.instance != null)
+        {
+            if (GameManager.instance.enemyAISpawnTransform != null)
+            {
+                GameManager.instance.enemies.Remove(this);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -42,7 +62,7 @@ public class AIController : Controller
 
         // Get the agent off the pawn
         agent = pawn.GetComponent<NavMeshAgent>();
-
+     
         // If it doesn't have one, add one and store it
         if (agent == null)
         {
@@ -65,21 +85,24 @@ public class AIController : Controller
 
     private void ShootTarget()
     {
-        // If we are within distance
-        if (Vector3.Distance(targetTransform.position, pawn.transform.position) <= shootingDistance)
+        if (pawn != null)
         {
-            // And we are within the angle
-            Vector3 vectorToTarget = targetTransform.position - pawn.transform.position;
-            if (Vector3.Angle(pawn.transform.forward, vectorToTarget) <= shootingAngle)
+            // If we are within distance
+            if (Vector3.Distance(targetTransform.position, pawn.transform.position) <= shootingDistance)
             {
-                // They should pull the trigger
-                pawn.weapon.OnPrimaryAttackBegin.Invoke();
+                // And we are within the angle
+                Vector3 vectorToTarget = targetTransform.position - pawn.transform.position;
+                if (Vector3.Angle(pawn.transform.forward, vectorToTarget) <= shootingAngle)
+                {
+                    // They should pull the trigger
+                    pawn.weapon.OnPrimaryAttackBegin.Invoke();
+                }
             }
-        }
-        else
-        {
-            // They can release the trigger
-            pawn.weapon.OnPrimaryAttackEnd.Invoke();
+            else
+            {
+                // They can release the trigger
+                pawn.weapon.OnPrimaryAttackEnd.Invoke();
+            }
         }
     }
 
@@ -95,12 +118,15 @@ public class AIController : Controller
 
     private void TargetPlayer()
     {
-        Controller playerController = FindObjectOfType<PlayerController>();
-        if (playerController != null)
+        if (pawn != null)
         {
-            if (playerController.pawn != null)
+            Controller playerController = FindObjectOfType<PlayerController>();
+            if (playerController != null)
             {
-                targetTransform = playerController.pawn.transform;
+                if (playerController.pawn != null)
+                {
+                    targetTransform = playerController.pawn.transform;
+                }
             }
         }
     }
@@ -122,23 +148,26 @@ public class AIController : Controller
     /// </summary>
     protected override void MakeDecisions()
     {
-        // If we don't have a pawn, we can't make decisions for it, so do nothing
-        if (pawn == null)
+        if (pawn != null)
         {
-            return;
+            // If we don't have a pawn, we can't make decisions for it, so do nothing
+            if (pawn == null)
+            {
+                return;
+            }
+
+            // Set our NavMeshAgent to seek our target
+            agent.SetDestination(targetTransform.position);
+
+            // Find the velocity that the agent wants to move in order to follow the path
+            desiredVelocity = agent.desiredVelocity;
+
+            // Send the direction in to our Move function (use the move function to add speed)
+            pawn.Move(desiredVelocity.normalized);
+
+            // Look towards the player
+            pawn.RotateToLookAt(targetTransform.position);
         }
-
-        // Set our NavMeshAgent to seek our target
-        agent.SetDestination(targetTransform.position);
-
-        // Find the velocity that the agent wants to move in order to follow the path
-        desiredVelocity = agent.desiredVelocity;
-
-        // Send the direction in to our Move function (use the move function to add speed)
-        pawn.Move(desiredVelocity.normalized);
-
-        // Look towards the player
-        pawn.RotateToLookAt(targetTransform.position);
     }
     public override void Respawn()
     {

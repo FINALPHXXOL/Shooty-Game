@@ -59,12 +59,11 @@ public abstract class Pawn : MonoBehaviour
         {
             Destroy(weapon.gameObject);
         }
+        // Set the weapon's owner
+        weapon.owner = null;
 
         // Set the weapon to null - this should happen automatically, but we can also do it explicitly just to be sure
         weapon = null;
-
-        // Set the weapon's owner
-        weapon.owner = null;
     }
 
 

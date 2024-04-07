@@ -47,14 +47,9 @@ MonoBehaviour:
   pawn: {fileID: 0}
   lives: 0
   score: 0
-  currentState: 0
-  target: {fileID: 0}
-  fleeDistance: 0
-  waypoints: []
-  waypointStopDistance: 0
-  hearingDistance: 0
-  viewDistance: 0
-  fieldOfView: 0
-  isPatrolLoop: 0
-  isChasing: 0
-  color: {r: 1, g: 0, b: 0, a: 1}
+  accuracy: 2
+  agent: {fileID: 0}
+  stoppingDistance: 2
+  targetTransform: {fileID: 0}
+  shootingDistance: 10
+  shootingAngle: 45

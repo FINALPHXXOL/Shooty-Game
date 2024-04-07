@@ -31,6 +31,7 @@ public class Health : MonoBehaviour
         // If our health is <= 0, die
         if (currentHealth <= 0)
         {
+            print("bruh1");
             Die();
         }
     }
@@ -53,6 +54,7 @@ public class Health : MonoBehaviour
 
     public void Die()
     {
+        print("bruh2");
         // Kill our player
         currentHealth = 0;
 

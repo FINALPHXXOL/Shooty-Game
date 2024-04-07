@@ -6,7 +6,8 @@ using UnityEngine.Events;
 public class Weapon : MonoBehaviour
 {
     [Header("Events")]
-    [HideInInspector] public Pawn owner;
+    //[HideInInspector] 
+    public Pawn owner;
     public UnityEvent OnPrimaryAttackBegin;
     public UnityEvent OnPrimaryAttackEnd;
     public UnityEvent OnSecondaryAttackBegin;

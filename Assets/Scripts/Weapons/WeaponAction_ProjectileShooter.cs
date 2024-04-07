@@ -28,10 +28,12 @@ public class WeaponAction_ProjectileShooter : WeaponAction
         if (Time.time >= lastShotTime + secondsPerShot)
         {
             // if so...
-            print("It should shoot");
 
             // Instantiate the projectile
             GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation) as GameObject;
+
+            shotFiredSound.Play();
+            muzzleParticle.SpawnParticles();
 
             // Rotate it based on accuracy
             projectile.transform.Rotate(0, weapon.GetAccuracyRotationDegrees(weapon.owner.controller.accuracy), 0);
