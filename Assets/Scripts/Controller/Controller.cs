@@ -39,7 +39,6 @@ public abstract class Controller : MonoBehaviour
 
          // Set the pawn's controller to this controller
          pawn.controller = this;
-        print("bruh9");
     }
     /// <summary>
     /// Unlinks both the connected pawn's controller and sets our pawn variable to null.

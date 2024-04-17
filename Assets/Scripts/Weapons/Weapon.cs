@@ -16,6 +16,8 @@ public class Weapon : MonoBehaviour
     public Transform RightHandIKTarget;
     public Transform LeftHandIKTarget;
 
+    public Sprite weaponIcon;
+
     public float maxAccuracyRotation;
     
 

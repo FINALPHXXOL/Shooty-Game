@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,13 +21,17 @@ public class GameManager : MonoBehaviour
 
     public int currentWave;
 
+    public AudioMixer audioMixer;
+
     //Prefabs
     public GameObject prefabPlayerController;
     public GameObject prefabPlayerPawn;
     public GameObject prefabAIController;
     public GameObject prefabAIPawn;
+    public GameObject prefabEnemyUI;
     public Transform playerSpawnTransform;
     public Transform enemyAISpawnTransform;
+
 
     //Lists
     public List<PlayerController> players;
@@ -61,6 +67,7 @@ public class GameManager : MonoBehaviour
     {
         StartGame();
     }
+
     public void TogglePause()
     {
         if (isPaused)
@@ -72,21 +79,31 @@ public class GameManager : MonoBehaviour
             Pause();
         }
     }
+
     public void UnPause()
     {
+        // Unload the pause screen
+        SceneManager.UnloadSceneAsync("PauseMenu");
+
+        // Unpause
         isPaused = false;
         Time.timeScale = 1.0f;
     }
 
     public void Pause()
     {
+        // Load the pause screen
+        SceneManager.LoadScene("PauseMenu", LoadSceneMode.Additive);
+
+        // Pause the game
         isPaused = true;
         Time.timeScale = 0.0f;
     }
 
     public void DoGameOver()
     {
-        print("You lost!");
+        // Load victory scene
+        SceneManager.LoadScene("Failure");
     }
 
     public void StartGame()
@@ -127,7 +144,8 @@ public class GameManager : MonoBehaviour
 
     public void DoVictory()
     {
-        Debug.Log("---------------VICTORY---------------");
+        // Load victory scene
+        SceneManager.LoadScene("Victory");
     }
 
     public void FindCamera()
@@ -270,7 +288,6 @@ public class GameManager : MonoBehaviour
 
     public Pawn SpawnPawn(GameObject pawnToSpawn)
     {
-        print("bruh7");
         // Spawn the Player at a random spawn point
         Transform randomSpawnPoint = GetRandomSpawnPoint();
         GameObject newPawnObj = Instantiate(pawnToSpawn, randomSpawnPoint.position, randomSpawnPoint.rotation);
@@ -312,6 +329,14 @@ public class GameManager : MonoBehaviour
         if (newAIHealth != null)
         {
             newAIHealth.OnDeath.AddListener(OnEnemyDeath);
+            // Spawn a UI and attach it to the enemy
+            GameObject newEnemyUI = Instantiate(prefabEnemyUI, newAI.pawn.transform) as GameObject;
+            // Connect the enemy health
+            EnemyHealthDisplay newEnemyUIScript = newEnemyUI.GetComponent<EnemyHealthDisplay>();
+            if (newEnemyUIScript != null)
+            {
+                newEnemyUIScript.enemyHealth = newAIHealth;
+            }
         }
     }
 
