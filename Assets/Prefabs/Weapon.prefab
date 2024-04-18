@@ -174,7 +174,7 @@ AudioSource:
   m_GameObject: {fileID: 7741598621681609130}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5626984070150617987, guid: e658936385e20824d8bae375b35ea387, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -273,6 +273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66db42df4eff090429b0081d0c7f469f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 0}
+  shotFiredSound: {fileID: 0}
+  muzzleParticle: {fileID: 0}
   damageDone: 20
   fireRate: 10
   firePoint: {fileID: 737580670}
@@ -318,6 +321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9860833c652188b419e618937c569829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
   OnPrimaryAttackBegin:
     m_PersistentCalls:
       m_Calls:
@@ -368,6 +372,8 @@ MonoBehaviour:
       m_Calls: []
   RightHandIKTarget: {fileID: 5923604113457781353}
   LeftHandIKTarget: {fileID: 2040499901}
+  weaponIcon: {fileID: 0}
+  maxAccuracyRotation: 0
 --- !u!1001 &7631039368647008614
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public class Death_Notice : GameAction
 
     public void DestroyOnDeath()
     {
-        print("You've lost yet you still prevail!!!");
+        print("You've died yet you still prevail!!!");
     }
 }
 

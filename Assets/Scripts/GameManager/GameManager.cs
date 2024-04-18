@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour
 {
     #region Variables
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public CameraController mainCamera;
 
     public PlayerController player;
+
+    public KeyCode pauseKey;
 
     public bool isPaused;
 
@@ -22,6 +25,11 @@ public class GameManager : MonoBehaviour
     public int currentWave;
 
     public AudioMixer audioMixer;
+
+    public AudioSource audioSource;
+
+    public AudioClip gameplayMusic;
+    public AudioClip menuMusic;
 
     //Prefabs
     public GameObject prefabPlayerController;
@@ -51,6 +59,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;  // Subscribe to the sceneLoaded event
         }
         else
         {
@@ -63,9 +72,51 @@ public class GameManager : MonoBehaviour
         AISpawns = new List<AISpawnPoint>();
     }
 
+    public void Update()
+    {
+        if (Input.GetKeyDown(pauseKey))
+        {
+            if (isPaused == false)
+            {
+                Pause();
+            }
+            else if(isPaused == true)
+            {
+                UnPause();
+            }
+        }
+    }
+
     private void Start()
     {
-        StartGame();
+        if (audioSource.clip != menuMusic)
+        {
+                audioSource.clip = menuMusic;
+                audioSource.Play();
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "WeaponTest") // Check if the loaded scene is the Gameplay scene
+        {
+            StartGame(); // Call the method to initialize gameplay elements
+            if (audioSource.clip != gameplayMusic)
+            {
+                audioSource.clip = gameplayMusic;
+                audioSource.Play();
+            }
+
+        }
+
+        if (scene.name == "MainMenu")
+        {
+            if (audioSource.clip != menuMusic)
+            {
+                audioSource.clip = menuMusic;
+                audioSource.Play();
+            }       
+        }
     }
 
     public void TogglePause()
@@ -104,6 +155,7 @@ public class GameManager : MonoBehaviour
     {
         // Load victory scene
         SceneManager.LoadScene("Failure");
+        audioSource.Stop();
     }
 
     public void StartGame()
@@ -146,12 +198,28 @@ public class GameManager : MonoBehaviour
     {
         // Load victory scene
         SceneManager.LoadScene("Victory");
+        audioSource.Stop();
     }
 
     public void FindCamera()
     {
-        // Find and store the camera controller
-        mainCamera = FindObjectOfType<CameraController>();
+        if (mainCamera != null)
+        {
+            // Find and store the camera controller
+            mainCamera = FindObjectOfType<CameraController>();
+        } else
+        {
+            // Find the main camera in the scene
+            Camera cameraComponent = Camera.main;
+
+            // Check if a main camera exists and it has a CameraController component
+            if (cameraComponent != null)
+            {
+                mainCamera = cameraComponent.GetComponent<CameraController>();
+            }
+        }
+    
+        
     }
 
     public void QuitTheGame()

@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Audio;
 
 public class UIPauseMenu : MonoBehaviour
 {
     public Slider masterVolumeSlider;
     public Slider musicVolumeSlider;
     public Slider effectsVolumeSlider;
-    public Dropdown resolutionDropdown;
-    public Resolution refreshRateRatio;
+    public TMP_Dropdown resolutionDropdown;
 
     public List<string> resolutionOptions;
     public Toggle isFullscreenToggle;
+
+    public void Awake()
+    {
+        SetSlidersFromVolume();
+        SetResolutionOptions();
+    }
 
     public void ResumeGame()
     {
@@ -22,6 +29,7 @@ public class UIPauseMenu : MonoBehaviour
 
     public void QuitToMenu()
     {
+        GameManager.instance.UnPause();
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -50,14 +58,14 @@ public class UIPauseMenu : MonoBehaviour
         Screen.SetResolution(Screen.resolutions[resolutionDropdown.value].width, Screen.resolutions[resolutionDropdown.value].height, isFullscreenToggle.isOn);
     }
 
-    public void SetResolutionOptions()
+   public void SetResolutionOptions()
     {
         // Make a new list of the text we want to show as resolution options. 
         // This list is parallel to our Screen.resolutions array, so the index in one array lines up with the same index in the other array!
         resolutionOptions = new List<string>();
-        for (int i = 0; i < Screen.resolutions.Length; i++)
+        for (int i = 0; i<Screen.resolutions.Length; i++)
         {
-            resolutionOptions.Add(Screen.resolutions[i].width + "x" + Screen.resolutions[i].height + " :" + Screen.resolutions[i].refreshRate);
+            resolutionOptions.Add(Screen.resolutions[i].width + "x" + Screen.resolutions[i].height + " :" + Screen.resolutions[i].refreshRate);            
         }
         // Clear the dropdown
         resolutionDropdown.ClearOptions();

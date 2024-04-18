@@ -39,7 +39,6 @@ public class Pickup : MonoBehaviour
         
         // Destroy this gameObject
         Destroy(gameObject);
-        print("It shoudl be destroyed.");
         // Invoke the event so designers can add GameActions
         OnPickup.Invoke();
         

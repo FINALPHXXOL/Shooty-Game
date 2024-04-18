@@ -54,8 +54,6 @@ public abstract class Controller : MonoBehaviour
         // Set our pawn variable to null
         pawn = null;
 
-         
-        print("bruh8");
 
     }
     protected abstract void MakeDecisions();

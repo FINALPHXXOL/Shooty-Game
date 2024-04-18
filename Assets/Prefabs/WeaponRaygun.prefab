@@ -234,6 +234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 0}
+  shotFiredSound: {fileID: 0}
+  muzzleParticle: {fileID: 0}
   fireDistance: 10
   firePoint: {fileID: 3603182738446725579}
   damageDone: 10
@@ -326,6 +328,7 @@ MonoBehaviour:
         m_CallState: 2
   RightHandIKTarget: {fileID: 2802819211768829195}
   LeftHandIKTarget: {fileID: 1468247995631995855}
+  weaponIcon: {fileID: 0}
   maxAccuracyRotation: 11
 --- !u!82 &1390707412740504291
 AudioSource:
@@ -336,7 +339,7 @@ AudioSource:
   m_GameObject: {fileID: 2287526634193086152}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5626984070150617987, guid: e658936385e20824d8bae375b35ea387, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WeaponTest.unity
     guid: 844dd437cd517414f9bfff576e4d715d
+  - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: 32df4e7a108750c4baa5828165a7efa2
   m_configObjects: {}
